@@ -9,12 +9,12 @@
   <img src="https://img.shields.io/badge/dependencies-none-0e9a9c?style=flat-square" alt="No dependencies">
   <img src="https://img.shields.io/badge/build%20step-none-0e9a9c?style=flat-square" alt="No build step">
   <img src="https://img.shields.io/badge/photos-never%20uploaded-017173?style=flat-square" alt="Photos never uploaded">
-  <img src="https://img.shields.io/badge/hosting-GitHub%20Pages-017173?style=flat-square" alt="GitHub Pages">
+  <img src="https://img.shields.io/badge/deploy-Vercel-017173?style=flat-square" alt="Deploys on Vercel">
 </p>
 
 <p align="center">
   <a href="#quick-start">Quick start</a> ·
-  <a href="#deploy-to-github-pages">Deploy</a> ·
+  <a href="#deploy">Deploy</a> ·
   <a href="#output-formats">Output formats</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#use-it-for-another-event">Reuse it</a>
@@ -70,18 +70,62 @@ Then open <http://localhost:8000>.
 > Any static server works — `npx serve`, `php -S localhost:8000`, VS Code Live Server.
 > There is nothing to install and nothing to build.
 
-## Deploy to GitHub Pages
+## Deploy
 
-1. Push the repository.
-2. Open **Settings → Pages**, set *Source* to **Deploy from a branch**, pick branch
-   `main` and folder `/ (root)`, then **Save**.
-3. After a minute the site is live at:
+There is no build step and no server, so any static host works. The repository ships a
+[`vercel.json`](vercel.json) with sensible cache and security headers.
 
-   ```text
-   https://foysalpranto121.github.io/Auto-Frame-Generator-for-Dhaka-Commerce-College-/
-   ```
+### Vercel
 
-Share that link with the batch. That is the whole deployment.
+#### From the dashboard
+
+Import the GitHub repository, then:
+
+| Setting | Value |
+| --- | --- |
+| Framework Preset | **Other** |
+| Build Command | *leave empty* |
+| Output Directory | *leave empty* (the repository root) |
+| Install Command | *leave empty* |
+
+Press **Deploy**. Every push to `main` redeploys automatically.
+
+#### From the CLI
+
+```bash
+npm i -g vercel
+vercel          # preview deployment
+vercel --prod   # production
+```
+
+There is no `package.json`, so Vercel treats the repository as a static site and serves
+it as-is.
+
+<details>
+<summary>What <code>vercel.json</code> sets up</summary>
+
+- `/assets/*` is cached for a day with a week of `stale-while-revalidate` — the frame is
+  1.4 MB, so repeat visitors should not re-download it, but a replaced frame still reaches
+  everyone within a day rather than being stuck in an immutable cache.
+- `/css/*` and `/js/*` are cached for an hour, `/` is always revalidated, so a fix you
+  push is visible immediately.
+- `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` and a `Permissions-Policy`
+  that denies geolocation and microphone. The camera is deliberately **not** denied —
+  `<input type="file" capture>` is how phone users take a photo straight into the page.
+- No Content-Security-Policy. One could be added, but it would have to allow `blob:` for
+  the canvas download and Google Fonts for the typefaces, and an untested CSP that blocks
+  downloads is worse than none.
+
+</details>
+
+### GitHub Pages
+
+Also works, with no config file needed. Open **Settings → Pages**, set *Source* to
+**Deploy from a branch**, pick `main` and `/ (root)`, and save. The site appears at
+`https://<user>.github.io/<repo>/` within a minute or two.
+
+> Pages ignores `vercel.json`, so you lose the cache and security headers — everything
+> else behaves identically.
 
 ## Output formats
 
@@ -205,6 +249,8 @@ values and the whole site follows.
 ├── index.html              the entire page
 ├── css/style.css           theme, layout, light + dark
 ├── js/app.js               upload, fit, preview, export
+├── vercel.json             cache + security headers for the deployment
+├── .vercelignore           files the CLI should not upload
 ├── assets/
 │   ├── frame.webp          event frame, lossless, 1400×1200 (1.4 MB)
 │   ├── frame.png           same frame, loaded only if WebP fails (2 MB)

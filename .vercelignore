@@ -1,0 +1,7 @@
+# Nothing here is needed to serve the site.
+# Applies to `vercel` CLI deploys; a Git deploy clones the whole repo.
+
+Assests/          # the original artwork, kept in the repo for reference
+docs/             # screenshots used by README.md
+build/            # the page wrapped for the hosted Claude preview link
+README.md
