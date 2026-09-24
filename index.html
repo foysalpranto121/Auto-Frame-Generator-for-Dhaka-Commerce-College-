@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DCC-94 Reunion DP Studio</title>
+<meta name="description" content="Make your official DCC-94 Batch Reunion 2026 display picture. Upload a photo, fit it into the frame, download. Nothing leaves your device.">
+<meta name="theme-color" content="#017173">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="DCC-94 Reunion DP Studio">
+<meta property="og:description" content="Upload a photo, fit it into the reunion frame, and download your official DP.">
+<meta property="og:image" content="assets/banner.jpg">
+
+<link rel="icon" href="assets/icon-512.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar__in">
+    <div class="mark" aria-hidden="true">94</div>
+    <div class="topbar__txt">
+      <span class="topbar__title">DCC-94 Batch Reunion 2026</span>
+      <span class="topbar__sub">Display Picture Studio</span>
+    </div>
+    <div class="topbar__spacer"></div>
+    <a class="topbar__cta" href="#studio">Make my DP</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ---------------- Hero ---------------- -->
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div class="hero__copy">
+        <p class="eyebrow">Swapno Kanon Resort &middot; Gazipur</p>
+        <h1>One photo, one frame, <em>one batch</em></h1>
+        <p class="hero__lede">
+          Drop in a picture, nudge it until your face sits inside the circle, and download
+          your official reunion display picture. Everything is composited right here in your
+          browser &mdash; your photo never leaves this device.
+        </p>
+
+        <ul class="facts">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path>
+            </svg>
+            27 November 2026
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.6"></circle>
+            </svg>
+            Swapno Kanon Resort, Ulukhola
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16.5 5.4a3.2 3.2 0 0 1 0 5.2M18 20a6.4 6.4 0 0 0-2.2-4.8"></path>
+            </svg>
+            DCC-94 Co-operative Society
+          </li>
+        </ul>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#studio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 8h3l1.6-2h6.8L17 8h3v11H4z"></path><circle cx="12" cy="13.5" r="3.4"></circle>
+            </svg>
+            Make my DP
+          </a>
+          <a class="btn btn--ghost" href="assets/banner.jpg" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8M8 12h8M8 16h5"></path>
+            </svg>
+            View the full poster
+          </a>
+        </div>
+      </div>
+
+      <figure class="poster">
+        <span class="poster__tape" aria-hidden="true"></span>
+        <picture>
+          <source srcset="assets/banner.webp" type="image/webp">
+          <img src="assets/banner.jpg" width="860" height="1290"
+               alt="DCC-94 Batch Reunion 2026 poster: 27 November 2026 at Swapno Kanon Resort, Ulukhola, Gazipur.">
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ---------------- Studio ---------------- -->
+  <section class="wrap studio" id="studio">
+    <div class="section-head">
+      <h2>Make your display picture</h2>
+      <p>Three steps, about twenty seconds. The frame is composited on your own device, so nothing is uploaded and nothing is stored.</p>
+    </div>
+
+    <div class="studio__card">
+      <div class="studio__grid">
+
+        <!-- controls -->
+        <div class="panel">
+          <div class="step">
+            <div class="step__head">
+              <span class="step__num" aria-hidden="true">1</span>
+              <h3>Choose your photo</h3>
+            </div>
+
+            <div class="drop" id="dropZone">
+              <input type="file" id="fileInput" accept="image/*" aria-label="Choose a photo to put in the frame">
+
+              <div id="dropIdle" class="drop__idle">
+                <svg class="drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 16V4m0 0 4 4m-4-4L8 8"></path><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path>
+                </svg>
+                <span class="drop__main"><b>Click or drop</b> a photo here</span>
+                <span class="drop__sub">JPG, PNG or WEBP &middot; you can also paste with Ctrl&nbsp;+&nbsp;V</span>
+              </div>
+
+              <div id="dropFilled" class="filechip" hidden>
+                <img class="filechip__thumb" id="fileThumb" alt="">
+                <span class="filechip__meta">
+                  <span class="filechip__name" id="fileName">photo.jpg</span>
+                  <span class="filechip__hint">Click to pick a different photo</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__head">
+              <span class="step__num" aria-hidden="true">2</span>
+              <h3>Line up your face</h3>
+            </div>
+
+            <div class="ctrls">
+              <div class="ctrl">
+                <div class="ctrl__top"><label for="rScale">Zoom</label><span class="ctrl__val" id="vScale">100%</span></div>
+                <input type="range" id="rScale" min="50" max="300" value="100" step="1" disabled>
+              </div>
+              <div class="ctrl__row">
+                <div class="ctrl">
+                  <div class="ctrl__top"><label for="rX">Left / right</label><span class="ctrl__val" id="vX">0</span></div>
+                  <input type="range" id="rX" min="-500" max="500" value="0" step="1" disabled>
+                </div>
+                <div class="ctrl">
+                  <div class="ctrl__top"><label for="rY">Up / down</label><span class="ctrl__val" id="vY">0</span></div>
+                  <input type="range" id="rY" min="-500" max="500" value="0" step="1" disabled>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__head">
+              <span class="step__num" aria-hidden="true">3</span>
+              <h3>Pick the size</h3>
+            </div>
+
+            <p class="field-label" id="shapeLabel">Where will you post it</p>
+            <div class="chips" role="group" aria-labelledby="shapeLabel">
+              <button type="button" class="chip" data-shape="fb" aria-pressed="true">
+                Facebook DP <small>1200 &times; 1200 &middot; full frame, rounded</small>
+              </button>
+              <button type="button" class="chip" data-shape="frame" aria-pressed="false">
+                Full frame <small>1400 &times; 1200 &middot; the whole scene</small>
+              </button>
+              <button type="button" class="chip" data-shape="story" aria-pressed="false">
+                Story <small>1080 &times; 1920 &middot; status &amp; stories</small>
+              </button>
+            </div>
+
+            <p class="field-label" style="margin-top:18px" id="fmtLabel">File type</p>
+            <div class="chips" role="group" aria-labelledby="fmtLabel">
+              <button type="button" class="chip" data-format="png" aria-pressed="true">PNG <small>sharpest</small></button>
+              <button type="button" class="chip" data-format="jpg" aria-pressed="false">JPG <small>smaller file</small></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- stage -->
+        <div class="stage">
+          <div class="stage__frame" id="stageFrame">
+            <span class="stage__badge" id="stageBadge">Sample preview</span>
+            <canvas id="preview" width="1080" height="1080"
+                    aria-label="Preview of your photo inside the reunion frame"></canvas>
+          </div>
+          <p class="stage__note" id="stageHint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+            </svg>
+            Your frame is used exactly as supplied &mdash; same size, nothing redrawn &mdash; just squared off for a profile picture. Facebook rounds it to the dashed circle, so the corners sit outside what it shows.
+          </p>
+          <p class="stage__hint">
+            <span>Drag the picture to move it</span>
+            <span aria-hidden="true">&middot;</span>
+            <span>scroll or pinch to zoom</span>
+            <span aria-hidden="true">&middot;</span>
+            <span>paste with <kbd>Ctrl</kbd> <kbd>V</kbd></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="studio__actions">
+        <p class="studio__note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+          </svg>
+          Your photo is processed on this device. It is never uploaded.
+        </p>
+        <button type="button" class="btn btn--ghost" id="btnReset" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12a8 8 0 1 1 2.6 5.9"></path><path d="M4 20v-5h5"></path>
+          </svg>
+          Auto-fit again
+        </button>
+        <button type="button" class="btn btn--primary" id="btnDownload" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 4v10m0 0 4-4m-4 4-4-4"></path><path d="M4 17v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"></path>
+          </svg>
+          Download my DP
+        </button>
+      </div>
+
+      <div class="result" id="resultWrap" hidden>
+        <div class="result__pic is-circle" id="resultPic"><img id="resultImg" alt=""></div>
+        <div class="result__txt">
+          <h3>Your DP is ready</h3>
+          <p class="result__meta" id="resultMeta"></p>
+          <p class="result__hint">
+            If the download did not start, right-click the picture above &mdash; or long-press it
+            on a phone &mdash; and choose <b>Save image</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------- Tips ---------------- -->
+  <section class="wrap how">
+    <div class="how__grid">
+      <article class="how__item">
+        <p class="how__k">GOOD SOURCE PHOTO</p>
+        <h4>Face forward, decent light</h4>
+        <p>Square or portrait shots fit the circle best. A photo taken against a window or outdoors beats a dim indoor selfie every time.</p>
+      </article>
+      <article class="how__item">
+        <p class="how__k">MIND THE WAVE</p>
+        <h4>Keep your chin above the band</h4>
+        <p>The teal wave carrying the batch name covers the bottom of the circle. Drag the picture up a little so your chin clears that line.</p>
+      </article>
+      <article class="how__item">
+        <p class="how__k">WHICH SIZE</p>
+        <h4>Facebook DP for profiles</h4>
+        <p>Facebook and WhatsApp crop profile pictures to a circle, so Facebook DP scales the frame until its ring fills that circle exactly. Story adds the date and venue underneath for status posts.</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div>
+      <h3>DCC-94 Batch Reunion 2026</h3>
+      <p>Friday, 27 November 2026</p>
+      <p>Swapno Kanon Resort, Ulukhola, Gazipur</p>
+      <p>Organized by DCC-94 Co-operative Society</p>
+    </div>
+    <div>
+      <h3>Questions?</h3>
+      <ul class="foot__contacts">
+        <li><b>Masud</b> <span>01712-653763</span></li>
+        <li><b>Nipun</b> <span>01670-570704</span></li>
+        <li><b>Ronok</b> <span>01919-605040</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot__bar">
+    <span>Made for the DCC-94 batch. Photos are never uploaded.</span>
+    <span>See you by the lake.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
