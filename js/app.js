@@ -273,28 +273,8 @@
     centeredText(ctx, EVENT.venue, 1692, '500', 34, OUTFIT, 'rgba(255,255,255,.94)', 0, STORY_MAX_W);
   }
 
-  /* ---- preview-only: show what Facebook's circular mask will hide ---- */
-  function drawMaskGuide(ctx, T) {
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, T.w, T.h);
-    ctx.arc(T.w / 2, T.h / 2, T.w / 2, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(3,32,31,.55)';
-    ctx.fill('evenodd');
-    ctx.restore();
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(T.w / 2, T.h / 2, T.w / 2 - 2, 0, Math.PI * 2);
-    ctx.setLineDash([18, 14]);
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = 'rgba(255,255,255,.7)';
-    ctx.stroke();
-    ctx.restore();
-  }
-
   /* ---------------- the one renderer ---------------- */
-  function renderOutput(ctx, shape, pixelScale, forPreview) {
+  function renderOutput(ctx, shape, pixelScale) {
     var T = shapeTransform(shape);
     ctx.setTransform(pixelScale, 0, 0, pixelScale, 0, 0);
     ctx.clearRect(0, 0, T.w, T.h);
@@ -314,7 +294,6 @@
     ctx.restore();
 
     if (shape === 'story') drawStoryText(ctx);
-    if (forPreview && shape === 'fb') drawMaskGuide(ctx, T);
     return T;
   }
 
@@ -342,7 +321,7 @@
     var budget = clamp(window.innerHeight * 0.62, 240, 620);
     stageFrame.style.maxWidth = Math.round(Math.min(556, budget * T.w / T.h)) + 'px';
 
-    renderOutput(pctx, state.shape, ps, true);
+    renderOutput(pctx, state.shape, ps);
   }
 
   function schedule() {
@@ -680,7 +659,7 @@
     var T = shapeTransform(state.shape);
     var out = document.createElement('canvas');
     out.width = T.w; out.height = T.h;
-    renderOutput(out.getContext('2d'), state.shape, 1, false);
+    renderOutput(out.getContext('2d'), state.shape, 1);
     return out;
   }
 

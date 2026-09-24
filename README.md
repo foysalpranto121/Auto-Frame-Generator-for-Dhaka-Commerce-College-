@@ -46,7 +46,7 @@ uploaded anywhere, so there is nothing to host, nothing to pay for and nothing t
 - **Drag to move, pinch to zoom** on a phone; drag and scroll-wheel on a desktop — or use
   the zoom / left-right / up-down sliders on either
 - **Live preview of the real output** — pick Facebook DP and the preview becomes the square
-  it will produce, with a dashed circle showing what Facebook crops to
+  it will produce — the preview is the export, with nothing drawn over it
 - **Three output sizes** for profile pictures, the full scene and stories
 - **PNG or JPG**, exported at full resolution
 - **Your frame is never redrawn** — see [frame fidelity](#frame-fidelity)
