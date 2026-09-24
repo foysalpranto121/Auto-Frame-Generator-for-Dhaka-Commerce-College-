@@ -321,6 +321,13 @@
       preview.height = ch;
     }
     stageFrame.style.aspectRatio = T.w + ' / ' + T.h;
+
+    /* Cap how much of a phone screen the preview may eat. Without this a
+       1080x1920 Story preview fills the viewport, and since dragging needs
+       touch-action:none there is then nothing left to scroll the page by. */
+    var budget = clamp(window.innerHeight * 0.62, 240, 620);
+    stageFrame.style.maxWidth = Math.round(Math.min(556, budget * T.w / T.h)) + 'px';
+
     renderOutput(pctx, state.shape, ps, true);
   }
 
@@ -415,6 +422,8 @@
     btnDownload.disabled = !has;
     btnReset.disabled = !has;
     preview.classList.toggle('is-live', has);
+    // Only swallow touch scrolling once there is actually something to drag.
+    stageFrame.classList.toggle('is-live', has);
     stageBadge.textContent = has ? 'Live preview' : 'Sample preview';
   }
 
@@ -475,16 +484,53 @@
     });
   });
 
-  /* ---------------- drag + wheel on the preview ---------------- */
-  var drag = null;
+  /* ---------------- drag, pinch and wheel on the preview ---------------- */
+  var drag = null, pinch = null;
+
+  function touchGap(touches) {
+    var dx = touches[0].clientX - touches[1].clientX;
+    var dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function applyScale(next) {
+    state.scale = clamp(next, 0.5, 3);
+    elScale.value = Math.round(state.scale * 100);
+    syncReadouts(); schedule();
+  }
+
+  // Two-finger pinch. The page promises it, so it has to work on a phone.
+  preview.addEventListener('touchstart', function (e) {
+    if (!state.photo || e.touches.length !== 2) return;
+    e.preventDefault();
+    drag = null;                       // a pinch is never also a pan
+    preview.classList.remove('is-drag');
+    pinch = { gap: touchGap(e.touches), scale: state.scale };
+  }, { passive: false });
+
+  preview.addEventListener('touchmove', function (e) {
+    if (!pinch || e.touches.length !== 2) return;
+    e.preventDefault();
+    var gap = touchGap(e.touches);
+    if (pinch.gap > 0) applyScale(pinch.scale * (gap / pinch.gap));
+  }, { passive: false });
+
+  ['touchend', 'touchcancel'].forEach(function (evt) {
+    preview.addEventListener(evt, function (e) {
+      if (e.touches.length < 2) pinch = null;
+      // a finger left mid-pinch: don't let the survivor resume a stale pan
+      if (e.touches.length < 2) drag = null;
+    });
+  });
+
   preview.addEventListener('pointerdown', function (e) {
-    if (!state.photo) return;
+    if (!state.photo || pinch) return;
     preview.setPointerCapture(e.pointerId);
     preview.classList.add('is-drag');
     drag = { x: e.clientX, y: e.clientY, ox: state.offX, oy: state.offY };
   });
   preview.addEventListener('pointermove', function (e) {
-    if (!drag) return;
+    if (!drag || pinch) return;
     var T = shapeTransform(state.shape);
     var rect = preview.getBoundingClientRect();
     // screen px -> output px -> artwork px
@@ -504,10 +550,7 @@
   preview.addEventListener('wheel', function (e) {
     if (!state.photo) return;
     e.preventDefault();
-    var next = clamp(state.scale * (e.deltaY > 0 ? 0.94 : 1.06), 0.5, 3);
-    state.scale = next;
-    elScale.value = Math.round(next * 100);
-    syncReadouts(); schedule();
+    applyScale(state.scale * (e.deltaY > 0 ? 0.94 : 1.06));
   }, { passive: false });
 
   /* ---------------- drop / paste / picker ---------------- */
@@ -593,6 +636,10 @@
   }
 
   btnDownload.addEventListener('click', exportImage);
+
+  // the preview's size budget depends on viewport height, so re-fit on rotate
+  window.addEventListener('resize', schedule);
+  window.addEventListener('orientationchange', schedule);
 
   /* ---------------- boot ---------------- */
   setHasPhoto(false);

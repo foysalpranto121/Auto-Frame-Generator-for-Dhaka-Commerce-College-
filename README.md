@@ -43,13 +43,16 @@ uploaded anywhere, so there is nothing to host, nothing to pay for and nothing t
 
 - **Drop, click or paste** a photo — drag-and-drop, the file picker, or <kbd>Ctrl</kbd>+<kbd>V</kbd>
 - **Smart auto-fit** places the photo so a face lands above the batch-name band, not behind it
-- **Drag to move, scroll to zoom**, or use the zoom / left-right / up-down sliders
+- **Drag to move, pinch to zoom** on a phone; drag and scroll-wheel on a desktop — or use
+  the zoom / left-right / up-down sliders on either
 - **Live preview of the real output** — pick Facebook DP and the preview becomes the square
   it will produce, with a dashed circle showing what Facebook crops to
 - **Three output sizes** for profile pictures, the full scene and stories
 - **PNG or JPG**, exported at full resolution
 - **Your frame is never redrawn** — see [frame fidelity](#frame-fidelity)
-- Works offline once loaded · dark and light themes · usable on a phone
+- **Built for phones** — most members will open this on mobile, so it is verified there
+  rather than assumed: see [mobile](#mobile)
+- Works offline once loaded · follows the system's dark or light theme
 
 ## Quick start
 
@@ -211,6 +214,25 @@ values and the whole site follows.
 ├── build/artifact.html     same page, wrapped for a hosted preview link
 └── Assests/                the original artwork, untouched
 ```
+
+## Mobile
+
+Most members will open this on a phone, so the mobile build is the one that matters.
+
+- **One column, preview first.** On a narrow screen the preview moves above the controls,
+  so you watch your photo while the sliders underneath move it.
+- **One-finger drag** to reposition, **two-finger pinch** to zoom, directly on the preview.
+- **44 px touch targets.** The sliders are the main control on a phone and get a full-height
+  hit area with a thumb you can actually find.
+- **The page still scrolls.** Dragging needs `touch-action: none`, which would otherwise
+  trap a swipe that starts on the preview — so it is only applied once a photo is loaded,
+  and the preview's height is capped at 62 % of the viewport so there is always page to
+  scroll past it.
+- **Keyboard-only hints are hidden** on touch devices, where "paste with Ctrl+V" is noise.
+
+Verified under Chrome device emulation at **390 × 844** and **360 × 800** with touch input:
+no horizontal scrolling at either size, drag and pinch both confirmed working against the
+live page.
 
 ## Browser support
 
