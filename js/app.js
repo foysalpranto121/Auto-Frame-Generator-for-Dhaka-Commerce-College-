@@ -89,7 +89,6 @@
   var stageFrame = $('stageFrame');
   var preview    = $('preview');
   var stageBadge = $('stageBadge');
-  var stageHint  = $('stageHint');
   var elScale    = $('rScale');
   var elX        = $('rX');
   var elY        = $('rY');
@@ -460,17 +459,12 @@
     toast('Back to the auto-fitted position.');
   });
 
-  function setShapeHint() {
-    stageHint.hidden = state.shape !== 'fb';
-  }
-
   shapeChips.forEach(function (chip) {
     chip.addEventListener('click', function () {
       state.shape = chip.dataset.shape;
       shapeChips.forEach(function (c) {
         c.setAttribute('aria-pressed', String(c === chip));
       });
-      setShapeHint();
       schedule();
     });
   });
@@ -643,7 +637,6 @@
 
   /* ---------------- boot ---------------- */
   setHasPhoto(false);
-  setShapeHint();
   syncReadouts();
   renderPreview();
   loadFrame().then(function (im) {
