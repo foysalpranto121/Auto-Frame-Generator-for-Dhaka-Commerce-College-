@@ -1,7 +1,17 @@
 # Nothing here is needed to serve the site.
 # Applies to `vercel` CLI deploys; a Git deploy clones the whole repo.
+# Note: these are gitignore-style patterns and do NOT support trailing comments.
 
-Assests/          # the original artwork, kept in the repo for reference
-docs/             # screenshots used by README.md
-build/            # the page wrapped for the hosted Claude preview link
+# the original artwork, kept in the repo for reference
+Assests/
+
+# screenshots used by README.md
+docs/
+
+# the page wrapped for the hosted Claude preview link
+build/
+
+# the script that regenerates the inline preview frame
+tools/
+
 README.md
