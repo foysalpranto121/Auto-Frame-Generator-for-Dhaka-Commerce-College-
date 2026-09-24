@@ -318,7 +318,7 @@
     /* Cap how much of a phone screen the preview may eat. Without this a
        1080x1920 Story preview fills the viewport, and since dragging needs
        touch-action:none there is then nothing left to scroll the page by. */
-    var budget = clamp(window.innerHeight * 0.62, 240, 620);
+    var budget = clamp(window.innerHeight * 0.68, 240, 620);
     stageFrame.style.maxWidth = Math.round(Math.min(556, budget * T.w / T.h)) + 'px';
 
     renderOutput(pctx, state.shape, ps);
@@ -424,10 +424,25 @@
       autoFit();
       setHasPhoto(true);
       showThumb(file);
+      revealPreview();
       toast('Photo placed. Drag it to line up your face.');
     }).catch(function () {
       toast('Could not read that image. Try a different file.');
     });
+  }
+
+  /* On a phone the preview sits above the controls, so the photo they just
+     picked lands off-screen. Bring it to them instead of making them scroll. */
+  function revealPreview() {
+    if (!window.matchMedia || !window.matchMedia('(max-width: 980px)').matches) return;
+    var rect = stageFrame.getBoundingClientRect();
+    if (rect.top >= 0 && rect.bottom <= window.innerHeight) return;   // already visible
+    var smooth = !(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    try {
+      stageFrame.scrollIntoView({ block: 'center', behavior: smooth ? 'smooth' : 'auto' });
+    } catch (e) {
+      stageFrame.scrollIntoView();
+    }
   }
 
   function showThumb(file) {
