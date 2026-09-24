@@ -596,12 +596,11 @@ input[type=range]:disabled{opacity:.45;cursor:not-allowed;}
 /* ---------------- Responsive ---------------- */
 @media (max-width:980px){
   .hero__in{grid-template-columns:1fr;gap:36px;padding-block:42px 46px;}
-  .poster{width:min(100%,296px);order:-1;}
+  /* One column, but the same reading order as the desktop layout:
+     hero text then poster, and steps 1-2-3 then the preview. */
+  .poster{width:min(100%,296px);}
   .studio__grid{grid-template-columns:1fr;}
-  .panel{border-right:none;}
-  /* On one column the preview leads: you watch your photo while the controls
-     underneath move it, instead of adjusting something you cannot see. */
-  .stage{order:-1;border-bottom:1px solid var(--line-soft);}
+  .panel{border-right:none;border-bottom:1px solid var(--line-soft);}
   .how__grid{grid-template-columns:1fr;}
   .foot__in{grid-template-columns:1fr;gap:24px;}
 }
