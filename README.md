@@ -270,15 +270,20 @@ Most members will open this on a phone, so the mobile build is the one that matt
 - **One-finger drag** to reposition, **two-finger pinch** to zoom, directly on the preview.
 - **44 px touch targets.** The sliders are the main control on a phone and get a full-height
   hit area with a thumb you can actually find.
+- **Scrolling never moves a slider.** A range input jumps its value to wherever a finger
+  lands on the track, so swiping down the page over one used to silently rescale the
+  photo. Only a deliberate sideways drag changes a slider now; a vertical swipe scrolls
+  and puts the value back, and a graze with no movement changes nothing.
 - **The page still scrolls.** Dragging needs `touch-action: none`, which would otherwise
   trap a swipe that starts on the preview — so it is only applied once a photo is loaded,
   and the preview's height is capped at 62 % of the viewport so there is always page to
   scroll past it.
 - **Keyboard-only hints are hidden** on touch devices, where "paste with Ctrl+V" is noise.
 
-Verified under Chrome device emulation at **390 × 844** and **360 × 800** with touch input:
-no horizontal scrolling at either size, drag and pinch both confirmed working against the
-live page.
+Verified under Chrome device emulation at **390 × 844** and **360 × 800** with real touch
+input: no horizontal scrolling at either size; one-finger drag and two-finger pinch both
+move the photo; a downward swipe starting on the zoom slider scrolls the page and leaves
+the zoom untouched, while a sideways drag on the same slider still adjusts it.
 
 ## Browser support
 

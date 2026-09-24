@@ -454,6 +454,58 @@
     syncReadouts(); schedule();
   });
 
+  /* ---- touch guard for the sliders ----
+     A range input jumps its value to wherever a finger lands on the track, so
+     scrolling the page with a thumb that grazes a slider silently rescales the
+     photo. Only a deliberate sideways drag should move one: a vertical swipe
+     scrolls and puts the value back, and a graze with no movement changes
+     nothing. The sideways drag is handled here too, because the
+     touch-action:pan-y that lets the page scroll also stops the native one. */
+  var slide = null;
+
+  function sliderValueAt(el, clientX) {
+    var r = el.getBoundingClientRect();
+    var min = parseFloat(el.min), max = parseFloat(el.max);
+    return Math.round(min + clamp((clientX - r.left) / r.width, 0, 1) * (max - min));
+  }
+
+  function setSlider(el, value) {
+    if (String(el.value) === String(value)) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  [elScale, elX, elY].forEach(function (el) {
+    el.addEventListener('touchstart', function (e) {
+      var t = e.touches[0];
+      // read the value before the widget's own jump happens
+      slide = { el: el, x: t.clientX, y: t.clientY, value: el.value, axis: null };
+    }, { passive: true });
+
+    el.addEventListener('touchmove', function (e) {
+      if (!slide || slide.el !== el) return;
+      var t = e.touches[0];
+      var dx = t.clientX - slide.x, dy = t.clientY - slide.y;
+      if (!slide.axis && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+        slide.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (slide.axis === 'y') {
+        setSlider(el, slide.value);            // the page is scrolling, not the slider
+      } else if (slide.axis === 'x') {
+        setSlider(el, sliderValueAt(el, t.clientX));
+      }
+    }, { passive: true });
+
+    ['touchend', 'touchcancel'].forEach(function (evt) {
+      el.addEventListener(evt, function () {
+        if (slide && slide.el === el && slide.axis === null) {
+          setSlider(el, slide.value);          // a graze, not a drag
+        }
+        slide = null;
+      });
+    });
+  });
+
   btnReset.addEventListener('click', function () {
     autoFit();
     toast('Back to the auto-fitted position.');
