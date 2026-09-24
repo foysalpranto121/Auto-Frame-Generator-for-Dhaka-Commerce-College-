@@ -207,13 +207,22 @@ Being exact makes it slow to fetch, so the app loads the frame in two stages:
 
 | File | Size | Used for |
 | --- | --- | --- |
-| `frame-lite.webp` | 83 KB | the preview, until the exact file arrives |
-| `frame.webp` | 1.4 MB | **every export**, always |
+| `FRAME_INLINE` in `js/app.js` | 40 KB, **no request** | the preview, until the exact file arrives |
+| `assets/frame.webp` | 1.4 MB | **every export**, always |
 
-The light copy paints the preview in about a second on mobile data; the exact one
-replaces it as soon as it lands. Pressing **Download** before it has arrived waits for it
-rather than saving the light copy, so a download is exact no matter how slow the
-connection is.
+The small copy is a data URI embedded in `app.js`, so the preview paints the moment the
+script runs — there is no second request to wait on, fail, or 404. The exact frame is
+then fetched in the background (immediately if the visitor picks a photo) and replaces
+it.
+
+Pressing **Download** before the exact frame has arrived waits for it rather than saving
+the small copy, so a download is exact no matter how slow the connection is.
+
+Regenerate the inline copy after changing the artwork:
+
+```bash
+python tools/inline-frame.py
+```
 
 ### Photo handling
 
@@ -262,11 +271,11 @@ values and the whole site follows.
 ├── vercel.json             cache + security headers for the deployment
 ├── .vercelignore           files the CLI should not upload
 ├── assets/
-│   ├── frame-lite.webp     fast preview copy, 700×600 (83 KB)
 │   ├── frame.webp          event frame, lossless, 1400×1200 (1.4 MB)
 │   ├── frame.png           same frame, loaded only if WebP fails (2 MB)
 │   ├── banner.jpg / .webp  event poster shown in the hero
 │   └── icon-*.png          favicon and Apple touch icon
+├── tools/inline-frame.py   regenerates the embedded preview frame
 ├── docs/                   images used by this README
 ├── build/artifact.html     same page, wrapped for a hosted preview link
 └── Assests/                the original artwork, untouched
@@ -283,7 +292,9 @@ Most members will open this on a phone, so the mobile build is the one that matt
   hit area with a thumb you can actually find.
 - **The preview appears in about two seconds, not ten.** The exact frame is a 1.4 MB
   lossless file — on mobile data that was nine seconds of staring at an empty preview.
-  An 83 KB copy now paints it first; downloads still use the exact file.
+  A small copy embedded in `app.js` now paints it with no network request at all, so a
+  slow or blocked fetch can no longer leave the preview empty. Downloads still wait for
+  the exact file.
 - **Scrolling never moves a slider.** A range input jumps its value to wherever a finger
   lands on the track, so swiping down the page over one used to silently rescale the
   photo. Only a deliberate sideways drag changes a slider now; a vertical swipe scrolls

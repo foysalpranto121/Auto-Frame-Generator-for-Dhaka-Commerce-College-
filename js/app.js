@@ -318,6 +318,13 @@
     return T;
   }
 
+  /* Says what the stage is actually showing. On a slow connection the frame
+     takes a moment, and silence there reads as broken rather than loading. */
+  function updateBadge() {
+    if (!frameImg) { stageBadge.textContent = 'Loading frame…'; return; }
+    stageBadge.textContent = state.photo ? 'Live preview' : 'Sample preview';
+  }
+
   function renderPreview() {
     var T = shapeTransform(state.shape);
     var ps = Math.min(1, 1100 / Math.max(T.w, T.h));
@@ -326,6 +333,7 @@
       preview.width = cw;
       preview.height = ch;
     }
+    updateBadge();
     stageFrame.style.aspectRatio = T.w + ' / ' + T.h;
 
     /* Cap how much of a phone screen the preview may eat. Without this a
@@ -460,7 +468,7 @@
     preview.classList.toggle('is-live', has);
     // Only swallow touch scrolling once there is actually something to drag.
     stageFrame.classList.toggle('is-live', has);
-    stageBadge.textContent = has ? 'Live preview' : 'Sample preview';
+    updateBadge();
   }
 
   /* ---------------- controls ---------------- */
