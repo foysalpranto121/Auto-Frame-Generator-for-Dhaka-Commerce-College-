@@ -729,6 +729,19 @@
 
   btnDownload.addEventListener('click', exportImage);
 
+  /* On a phone the action bar is docked to the bottom of the screen. Hide it
+     again once the studio scrolls away, so it does not float over the hero
+     or the footer. Default is docked, so if this never runs the bar is still
+     reachable. */
+  (function dockActions() {
+    var bar = document.querySelector('.studio__actions');
+    var card = document.querySelector('.studio__card');
+    if (!bar || !card || !window.IntersectionObserver) return;
+    new IntersectionObserver(function (entries) {
+      bar.classList.toggle('is-away', !entries[0].isIntersecting);
+    }, { rootMargin: '-72px 0px -96px 0px' }).observe(card);
+  })();
+
   // the preview's size budget depends on viewport height, so re-fit on rotate
   window.addEventListener('resize', schedule);
   window.addEventListener('orientationchange', schedule);

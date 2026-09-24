@@ -640,6 +640,61 @@ input[type=range]:disabled{opacity:.45;cursor:not-allowed;}
   .topbar__sub{display:none;}
 }
 
+/* ---------------- Mobile app shell ----------------
+   On a phone this should behave like an app, not a page: the tool is a
+   short scroll away, each step is its own row, options are tappable rows,
+   and the primary action stays docked in thumb reach while the studio is
+   on screen. Placed last so it wins over the width and touch blocks. */
+@media (max-width:700px){
+
+  /* the marketing block gets out of the way faster */
+  .hero__in{padding-block:24px 28px;gap:22px;}
+  .eyebrow{margin-bottom:13px;font-size:.63rem;padding:5px 11px;}
+  .hero h1{font-size:clamp(1.75rem,7.2vw,2.25rem);margin-bottom:11px;}
+  .hero__lede{font-size:.93rem;margin-bottom:17px;}
+  .facts{gap:7px;margin-bottom:18px;}
+  .facts li{font-size:.77rem;padding:6px 12px 6px 9px;}
+  .poster{width:min(100%,214px);}
+  .hero__actions{gap:9px;}
+  .hero__actions .btn{flex:1 1 100%;justify-content:center;}
+
+  .studio{padding-block:24px 0;}
+  .section-head{margin-bottom:14px;}
+  .section-head h2{font-size:1.3rem;}
+  .section-head p{font-size:.86rem;}
+
+  /* each step is its own row, like an app's settings list */
+  .panel{gap:0;padding:0;}
+  .step{padding:17px 16px 19px;border-bottom:1px solid var(--line-soft);}
+  .step:last-child{border-bottom:none;}
+
+  /* options read as full-width tappable rows */
+  .chips{display:grid;grid-template-columns:1fr;gap:8px;}
+  .chip{width:100%;text-align:left;border-radius:12px;padding:12px 14px;}
+  .chips--format{grid-template-columns:1fr 1fr;}
+
+  /* the action bar docks to the bottom of the screen */
+  body{padding-bottom:86px;}
+  .studio__actions{
+    position:fixed;left:0;right:0;bottom:0;z-index:45;
+    padding:11px 16px calc(11px + env(safe-area-inset-bottom, 0px));
+    gap:10px;
+    background:var(--surface);
+    border-top:1px solid var(--line);
+    box-shadow:0 -8px 26px rgba(1,58,61,.18);
+    transition:transform .25s ease;
+  }
+  .studio__actions .btn{flex:1 1 0;justify-content:center;padding:13px 10px;font-size:.9rem;}
+  /* JS adds this while the studio is off screen; default is docked, so the
+     bar is still reachable if the observer never runs */
+  .studio__actions.is-away{transform:translateY(130%);}
+  .studio__note{display:none;}
+
+  .result{padding:18px 16px 20px;}
+  .how{padding-block:6px 34px;}
+  .foot__in{padding-block:28px 22px;}
+}
+
 @media (prefers-reduced-motion: reduce){
   .poster,.poster:hover{transform:none;}
   *,*::before,*::after{
