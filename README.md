@@ -202,8 +202,18 @@ against the original `Assests/Frame.png` and comes back **100.00 % identical acr
 
 That is also why `assets/frame.webp` is encoded **losslessly**. An earlier lossy build
 was 343 KB but shifted colours by up to 80 levels; the lossless file is 1.4 MB and exact.
-If page weight ever matters more than exactness, re-encode it — but re-run that
-comparison before you do.
+
+Being exact makes it slow to fetch, so the app loads the frame in two stages:
+
+| File | Size | Used for |
+| --- | --- | --- |
+| `frame-lite.webp` | 83 KB | the preview, until the exact file arrives |
+| `frame.webp` | 1.4 MB | **every export**, always |
+
+The light copy paints the preview in about a second on mobile data; the exact one
+replaces it as soon as it lands. Pressing **Download** before it has arrived waits for it
+rather than saving the light copy, so a download is exact no matter how slow the
+connection is.
 
 ### Photo handling
 
@@ -252,6 +262,7 @@ values and the whole site follows.
 ├── vercel.json             cache + security headers for the deployment
 ├── .vercelignore           files the CLI should not upload
 ├── assets/
+│   ├── frame-lite.webp     fast preview copy, 700×600 (83 KB)
 │   ├── frame.webp          event frame, lossless, 1400×1200 (1.4 MB)
 │   ├── frame.png           same frame, loaded only if WebP fails (2 MB)
 │   ├── banner.jpg / .webp  event poster shown in the hero
@@ -270,6 +281,9 @@ Most members will open this on a phone, so the mobile build is the one that matt
 - **One-finger drag** to reposition, **two-finger pinch** to zoom, directly on the preview.
 - **44 px touch targets.** The sliders are the main control on a phone and get a full-height
   hit area with a thumb you can actually find.
+- **The preview appears in about two seconds, not ten.** The exact frame is a 1.4 MB
+  lossless file — on mobile data that was nine seconds of staring at an empty preview.
+  An 83 KB copy now paints it first; downloads still use the exact file.
 - **Scrolling never moves a slider.** A range input jumps its value to wherever a finger
   lands on the track, so swiping down the page over one used to silently rescale the
   photo. Only a deliberate sideways drag changes a slider now; a vertical swipe scrolls

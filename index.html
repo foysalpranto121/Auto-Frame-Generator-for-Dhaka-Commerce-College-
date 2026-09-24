@@ -15,6 +15,9 @@
 <link rel="icon" href="assets/icon-512.png" sizes="512x512" type="image/png">
 <link rel="apple-touch-icon" href="assets/icon-180.png">
 
+<!-- the preview frame is what people came for: fetch it before anything decorative -->
+<link rel="preload" as="image" href="assets/frame-lite.webp" fetchpriority="high">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap">
@@ -89,7 +92,7 @@
         <span class="poster__tape" aria-hidden="true"></span>
         <picture>
           <source srcset="assets/banner.webp" type="image/webp">
-          <img src="assets/banner.jpg" width="860" height="1290"
+          <img src="assets/banner.jpg" width="860" height="1290" fetchpriority="low"
                alt="DCC-94 Batch Reunion 2026 poster: 27 November 2026 at Swapno Kanon Resort, Ulukhola, Gazipur.">
         </picture>
       </figure>

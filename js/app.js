@@ -75,7 +75,9 @@
     shape: 'fb',
     format: 'png'
   };
-  var frameImg = null;
+  var frameImg = null;          // whatever can be drawn right now
+  var frameIsExact = false;     // true once the full lossless frame is in
+  var exactFramePromise = null;
   var rafPending = false;
 
   /* ---------------- elements ---------------- */
@@ -336,19 +338,46 @@
     requestAnimationFrame(function () { rafPending = false; renderPreview(); });
   }
 
-  /* ---------------- frame asset ---------------- */
-  function loadFrame() {
-    return new Promise(function (resolve) {
-      var tryList = ['assets/frame.webp', 'assets/frame.png'];
-      var i = 0;
-      (function next() {
-        if (i >= tryList.length) { resolve(null); return; }
-        var im = new Image();
-        im.onload = function () { frameImg = im; resolve(im); };
-        im.onerror = function () { i++; next(); };
-        im.src = tryList[i];
-      })();
+  /* ---------------- frame asset ----------------
+     The exact frame is a 1.4 MB lossless file - on mobile data that is ~9
+     seconds of staring at an empty preview. So a 135 KB copy paints the
+     preview within a second, and the exact one replaces it as soon as it
+     lands. Exports always wait for the exact one; nothing is ever saved
+     from the light copy. */
+  function loadImage(src) {
+    return new Promise(function (resolve, reject) {
+      var im = new Image();
+      im.onload = function () { resolve(im); };
+      im.onerror = function () { reject(new Error('could not load ' + src)); };
+      im.src = src;
     });
+  }
+
+  function loadExactFrame() {
+    if (exactFramePromise) return exactFramePromise;
+    exactFramePromise = loadImage('assets/frame.webp')
+      .catch(function () { return loadImage('assets/frame.png'); })
+      .then(function (im) {
+        frameImg = im;
+        frameIsExact = true;
+        renderPreview();
+        return im;
+      });
+    return exactFramePromise;
+  }
+
+  function loadFrame() {
+    return loadImage('assets/frame-lite.webp')
+      .then(function (im) {
+        if (!frameIsExact) { frameImg = im; renderPreview(); }
+      })
+      .catch(function () { /* no light copy: the exact one is the only option */ })
+      // queued after the light copy so it is not competing for bandwidth
+      .then(function () { return loadExactFrame(); })
+      .catch(function () {
+        toast('The frame artwork could not load. Check your connection.');
+        return null;
+      });
   }
 
   /* ---------------- photo intake ---------------- */
@@ -652,7 +681,11 @@
   function exportImage() {
     if (!state.photo) return;
     btnDownload.disabled = true;
-    ensureFonts().then(function () {
+
+    // Never save from the light preview copy - the download gets the exact frame.
+    if (!frameIsExact) toast('Finishing the frame download…');
+
+    Promise.all([ensureFonts(), loadExactFrame()]).then(function () {
       var out = buildOutput();
       var mime = state.format === 'jpg' ? 'image/jpeg' : 'image/png';
       var ext = state.format === 'jpg' ? 'jpg' : 'png';
@@ -691,11 +724,5 @@
   setHasPhoto(false);
   syncReadouts();
   renderPreview();
-  loadFrame().then(function (im) {
-    if (!im) {
-      toast('The frame artwork could not load. Check the assets folder.');
-      return;
-    }
-    renderPreview();
-  });
+  loadFrame();
 })();
